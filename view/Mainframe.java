@@ -44,14 +44,15 @@ public class Mainframe extends JFrame {
 		panel3 = new JPanel();
 		downloadPanel= new DownloadManagerPanel();
 		
-		GridLayout mainLayout = new GridLayout(5,1);
-		FlowLayout panellayout = new FlowLayout(FlowLayout.CENTER,20,10);
+		GridLayout mainLayout = new GridLayout(2,1);
+		FlowLayout panellayout = new FlowLayout(FlowLayout.CENTER,10,5);
+		GridLayout donwpanellayout = new GridLayout(2,1);
 		this.setSize(800, 500);
 		this.setLayout(mainLayout);
 		initElements();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		tfield1.setSize(100, 20);
-		panel1.setLayout(panellayout);panel2.setLayout(panellayout);panel3.setLayout(panellayout);downloadPanel.setLayout(panellayout);
+		panel1.setLayout(panellayout);panel2.setLayout(panellayout);panel3.setLayout(panellayout);downloadPanel.setLayout(donwpanellayout);
 		panel1.add(jlabel1); panel1.add(tfield2);panel1.add(jlabel2);panel1.add(tfield3);
 		panel2.add(jlabel3);panel2.add(tfield1);
 		panel3.add(button1); panel3.add(b_download);

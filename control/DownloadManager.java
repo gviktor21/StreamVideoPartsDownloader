@@ -14,19 +14,17 @@ public class DownloadManager implements DownloadListener {
 	private int previouspercent;
 	
 	public DownloadManager(DownloadManagerView downloadManagerView) {
-		// TODO Auto-generated constructor stub
 		this.view = downloadManagerView;
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		if(downloader.getState() == Downloader.STATE_START_DOWNLOADING) {
 			view.addDownloadLogNote(LOGNOTE_SESSION_START);
 			view.repaintDownSceen();
 		}else if(downloader.getState() == Downloader.STATE_NEW_FILE_TO_DOWNLOAD) {
 			view.addDownloadLogNote(downloader.getCurrentFileName()+ " "+ LOGNOTE_NEW_FILE);
-			view.addDownload(downloader.getCurrentFileName(), 0);
+			view.addDownload(downloader.getCurrentFileName(), 0,downloader.getCurrentFileSize());
 			view.repaintDownSceen();
 		}else if(downloader.getState() == Downloader.STATE_DOWNLOAD_IN_PROGRESS) {
 			int process = (int) ((downloader.getCurrentDownloadedData() / downloader.getCurrentFileSize())* 100) ;

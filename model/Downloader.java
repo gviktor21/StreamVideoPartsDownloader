@@ -30,14 +30,10 @@ public class Downloader implements DownloadManageable, Runnable {
 	public static int STATE_DOWNLOAD_IN_PROGRESS=3;
 	public static int STATE_NEW_FILE_TO_DOWNLOAD=2;
 	public static int STATE_DOWNLOAD_FINISHED=4;
+	private int numberOfFile=0;
 	public static String ERROR_WRONG_URL="URL formed wrong";
 	public static String ERROR_NO_LIST_GENERATED="There is no link to download";
 	public static String ERROR_DESTINATION_UNREACHABLE="Newtwork Socket Exception. Destination unreachable.";
-	
-	//todo get filename from disposition
-	//todo observerek beállítása State Changenel biztosan kell
-	//todo saját számozott fájlnév
-	// todo újrapróbálható letöltés
 	public Downloader(File generatedLinks) {
 		f_linkList=generatedLinks;
 		observers=new ArrayList<DownloadListener>();
@@ -85,7 +81,7 @@ public class Downloader implements DownloadManageable, Runnable {
 			if(responseCode == HttpURLConnection.HTTP_OK ) {
 				currentFileSize = httpConn.getContentLengthLong();
 				this.currentFileName =getFileNameFromUrl(source);
-				File downloadedFile = new File(currentFileName);
+				File downloadedFile = new File("part"+this.numberOfFile+".ts");
 				this.state=Downloader.STATE_NEW_FILE_TO_DOWNLOAD;
 				notifyDownloadManagers();
 				String disposition = httpConn.getHeaderField("Content-Disposition");
@@ -105,6 +101,7 @@ public class Downloader implements DownloadManageable, Runnable {
 				}else {
 					System.out.println(this.currentFileName+" nem letoltodott teljesen");
 				}
+				this.numberOfFile++;
 				out.close();
 				in.close();
 			}
@@ -160,12 +157,10 @@ public class Downloader implements DownloadManageable, Runnable {
 	}
 	@Override
 	public void removeDownloadManager(DownloadListener dlisten) {
-		// TODO Auto-generated method stub
 		observers.remove(dlisten);
 	}
 	@Override
 	public void notifyDownloadManagers() {
-		// TODO Auto-generated method stub
 		Iterator it = observers.iterator();
 		while(it.hasNext()) {
 			DownloadListener dlisten = (DownloadListener) it.next();
@@ -174,7 +169,6 @@ public class Downloader implements DownloadManageable, Runnable {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			this.state=Downloader.STATE_START_DOWNLOADING;
 			this.notifyDownloadManagers();
